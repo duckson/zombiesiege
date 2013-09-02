@@ -1,6 +1,8 @@
-package ZombieSiege;
+package duckson.zombiesiege;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,23 +11,27 @@ import javax.swing.*;
  * Time: 17:14
  * To change this template use File | Settings | File Templates.
  */
-public class Main {
-    public static void guiStuff() {
+class Main {
+    private static void guiStuff() {
         JFrame frame = new JFrame("ZombieSiege");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel label = new JLabel("Hello world");
-        frame.getContentPane().add(label);
+        PlayingField pf = new PlayingField();
 
+        frame.getContentPane().add(pf);
+        pf.setVisible(true);
+
+        frame.setPreferredSize(new Dimension(800, 600));
         frame.pack();
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 guiStuff();
+
             }
         });
     }
