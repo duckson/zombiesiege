@@ -1,4 +1,4 @@
-package duckson.zombiesiege;
+package nl.duckson.zombiesiege;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

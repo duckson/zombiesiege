@@ -1,8 +1,9 @@
-package duckson.zombiesiege;
+package nl.duckson.zombiesiege;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import nl.duckson.zombiesiege.PlayingField;
 import org.junit.Test;
 
 /**
