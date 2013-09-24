@@ -1,12 +1,17 @@
 package nl.duckson.zombiesiege;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Color;
-import javax.swing.JPanel;
-import java.util.Random;
+import nl.duckson.zombiesiege.entity.*;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,46 +19,116 @@ import java.util.Random;
  * Date: 02/09/2013
  * Time: 17:25
  */
-public class PlayingField extends JPanel {
+public class PlayingField extends JPanel implements ActionListener {
 
-    private static int PARTICLE_COUNT = 1024 * 20;
-    private Random random;
+    protected Timer timer;
+    protected Player player;
+    protected ArrayList<Entity> entities;
+
+    protected static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 400;
 
     public PlayingField() {
-        // Random is geen singleton vanwege de (optionele?) seeding
-        random = new Random();
-        // En wat is het verschil tussen `this.random` en `random`?
-        // Heeft het iets met getters en setters te doen?
+        addKeyListener(new TAdapter());
+        setFocusable(true);
+        setBackground(Color.LIGHT_GRAY);
+        setDoubleBuffered(true);
+
+        entities = new ArrayList<Entity>();
+
+        spawnPlayer();
+        spawnZombies();
+
+        timer = new Timer(25, this);
+        timer.start();
     }
 
-    private void drawGraphicSomething(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+    private void spawnPlayer()  {
+        player = new Player();
+        player.moveTo(BOARD_WIDTH / 2 - 32, BOARD_HEIGHT / 2 - 32);
+    }
 
-        g2d.setColor(Color.darkGray);
-
-        Dimension size = getSize();
-        Insets insets = getInsets();
-
-        int w = size.width - insets.left - insets.right;
-        int h = size.height - insets.top - insets.bottom;
-
-        for(int i = 0; i < PARTICLE_COUNT; i++) {
-            int x = Math.abs(random.nextInt()) % w;
-            int y = Math.abs(random.nextInt()) % h;
-
-            g2d.drawLine(x, y, x, y); // Want een lijn die nergens naartoe gaat
-                                      // is in principe een stipje...
+    private void spawnZombies() {
+        for(int i = 0; i < 10; i++) {
+            Zombie z = new Zombie();
+            z.moveTo((int) (Math.random() * 180), (int) (Math.random() * 180));
+            entities.add(z);
         }
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Wat houdt het type `Graphics` eigenlijk in? :/
-        drawGraphicSomething(g);
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        Graphics2D g2d = (Graphics2D) g;
+        if(player.isVisible())
+            g2d.drawImage(player.getImage(), player.getX(), player.getY(), this);
+
+        for(Entity e : entities) {
+            if(e.isVisible())
+                g2d.drawImage(e.getImage(), e.getX(), e.getY(), this);
+        }
+
+        for(Bullet b : player.bullets) {
+            if(b.isVisible())
+                g2d.drawImage(b.getImage(), b.getX(), b.getY(), this);
+        }
+
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
 
-    public int getParticleCount() {
-        return PARTICLE_COUNT;
+    public void actionPerformed(ActionEvent event) {
+        for(int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            if(e.isVisible()) {
+                e.move();
+            } else {
+                System.out.printf("Removing entity %s\n", e.toString());
+                entities.remove(i);
+            }
+        }
+
+        for(int i = 0; i < player.bullets.size(); i++) {
+            Bullet b = player.bullets.get(i);
+
+            if(b.isVisible()) {
+                b.move();
+            } else {
+                System.out.printf("Removing bullet %s\n", b.toString());
+                player.bullets.remove(i);
+            }
+        }
+
+        player.move();
+        checkCollisions();
+        repaint();
+    }
+
+    /**
+     * Check if any bullet clips an entity, and remove both if so.
+     */
+    public void checkCollisions() {
+        for(Bullet b : player.bullets) {
+            Rectangle bullet_rect = b.getBounds();
+
+            for(Entity e : entities) {
+                Rectangle entity_rect = e.getBounds();
+
+                if(bullet_rect.intersects(entity_rect)) {
+                    System.out.printf("Collision detected! %s %s\n", b.toString(), e.toString());
+                    b.setVisible(false);
+                    e.setVisible(false);
+                }
+            }
+        }
+    }
+
+    private class TAdapter extends KeyAdapter {
+        public void keyReleased(KeyEvent e) {
+            player.keyReleased(e);
+        }
+
+        public void keyPressed(KeyEvent e) {
+            player.keyPressed(e);
+        }
     }
 }
