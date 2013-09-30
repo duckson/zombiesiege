@@ -66,9 +66,7 @@ public abstract class Entity {
     public int getX() { return x; }
     public int getY() { return y; }
 
-    public String getIcon() {
-        return icon;
-    }
+    abstract public String getIcon();
 
     public boolean isVisible() {
         return visible;
