@@ -1,5 +1,7 @@
 package nl.duckson.zombiesiege.entity;
 
+import nl.duckson.zombiesiege.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -37,5 +39,9 @@ public class Zombie extends Entity {
         if(y >= Game.GAME_HEIGHT - width) dy = -1;
 
         super.move();
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 }

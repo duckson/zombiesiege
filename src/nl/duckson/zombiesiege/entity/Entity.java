@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created with IntelliJ IDEA.
  * User: mathijs
  * Date: 23/09/2013
  * Time: 17:21
@@ -24,6 +23,7 @@ public abstract class Entity {
 
     public boolean visible = true;
 
+    protected static int speed = 0;
 
     protected String icon;
     protected Image image;

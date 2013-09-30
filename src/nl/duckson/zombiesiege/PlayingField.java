@@ -6,11 +6,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +25,8 @@ public class PlayingField extends JPanel implements ActionListener {
 
     public PlayingField() {
         addKeyListener(new TAdapter());
+        addMouseListener(new MCAdapter());
+        addMouseMotionListener(new MAdapter());
         setFocusable(true);
         setBackground(Color.LIGHT_GRAY);
         setDoubleBuffered(true);
@@ -57,8 +57,9 @@ public class PlayingField extends JPanel implements ActionListener {
         super.paint(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        if(player.isVisible())
-            g2d.drawImage(player.getImage(), player.getX(), player.getY(), this);
+        if(player.isVisible()) {
+            g2d.drawImage(player.getImage(), player.getAffineTransform(), this);
+        }
 
         for(Entity e : entities) {
             if(e.isVisible())
@@ -106,9 +107,11 @@ public class PlayingField extends JPanel implements ActionListener {
      */
     public void checkCollisions() {
         for(Bullet b : player.bullets) {
+            if(!b.isVisible()) continue;
             Rectangle bullet_rect = b.getBounds();
 
             for(Entity e : entities) {
+                if(!e.isVisible()) continue;
                 Rectangle entity_rect = e.getBounds();
 
                 if(bullet_rect.intersects(entity_rect)) {
@@ -117,6 +120,19 @@ public class PlayingField extends JPanel implements ActionListener {
                     e.setVisible(false);
                 }
             }
+        }
+    }
+
+    // Adapters & listeners
+    private class MAdapter extends MouseMotionAdapter {
+        public void mouseMoved(MouseEvent e) {
+            player.watch(e.getX(), e.getY());
+        }
+    }
+
+    private class MCAdapter extends MouseAdapter {
+        public void mouseClicked(MouseEvent e) {
+            player.fire();
         }
     }
 

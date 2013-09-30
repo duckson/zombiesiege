@@ -1,7 +1,10 @@
 package nl.duckson.zombiesiege.entity;
 
+import nl.duckson.zombiesiege.Game;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,11 +19,19 @@ public class Bullet extends Entity {
 
     protected static int width = 8, height = 8;
 
+    protected int direction = 90;
+
+    public Bullet() {}
     public Bullet(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    public Bullet(int x, int y, int direction) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+    }
 
     public String getIcon() { return "bullet.png"; }
 
@@ -36,5 +47,9 @@ public class Bullet extends Entity {
         if(x > Game.GAME_WIDTH || x < 0 ||
            y > Game.GAME_HEIGHT || y < 0)
             visible = false;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 }
