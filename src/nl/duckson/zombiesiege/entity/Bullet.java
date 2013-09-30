@@ -13,8 +13,6 @@ import java.util.Arrays;
  * Time: 21:04
  */
 public class Bullet extends Entity {
-    public boolean visible = true;
-
     private final int BULLET_SPEED = 4;
 
     protected static int width = 8, height = 8;
@@ -22,6 +20,7 @@ public class Bullet extends Entity {
     protected int direction = 90;
 
     public Bullet() {}
+
     public Bullet(int x, int y) {
         this.x = x;
         this.y = y;
@@ -34,10 +33,6 @@ public class Bullet extends Entity {
     }
 
     public String getIcon() { return "bullet.png"; }
-
-    public boolean isVisible() {
-        return visible;
-    }
 
     public void move() {
         x -= BULLET_SPEED;
