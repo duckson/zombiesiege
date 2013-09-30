@@ -25,18 +25,22 @@ public abstract class Entity {
     public boolean visible = true;
 
 
-    protected static String icon;
-    protected static Image image;
-
-    public String getIcon() { return icon; }
+    protected String icon;
+    protected Image image;
 
     public Image getImage() {
         if(null == image) {
+            if(null == this.getIcon()) {
+                    System.out.printf("\nNo image available for %s\n",
+                            this.getClass().toString());
+                    System.exit(1);
+            }
             String image_location = "/res/" + this.getIcon();
             System.out.println("Loading sprite " + image_location);
-            ImageIcon ii = new ImageIcon(this.getClass().getResource(image_location));
+            ImageIcon ii = new ImageIcon(getClass().getResource(image_location));
             image = ii.getImage();
         }
+
         return image;
     }
 
@@ -61,6 +65,10 @@ public abstract class Entity {
 
     public int getX() { return x; }
     public int getY() { return y; }
+
+    public String getIcon() {
+        return icon;
+    }
 
     public boolean isVisible() {
         return visible;

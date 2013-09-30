@@ -11,24 +11,19 @@ import java.util.ArrayList;
  * Time: 17:21
  */
 public class Player extends Entity {
-    private static Image image;
-
-    protected static String icon = "player.png";
-
     public ArrayList<Bullet> bullets;
     protected int ammunition = 100;
 
     protected static int width = 64, height = 64;
 
-    // @todo: Find a solution for this.
-    @Override
-    public String getIcon() { return icon; }
 
     public ArrayList getBullets() { return bullets; }
 
     public Player() {
         bullets = new ArrayList<Bullet>();
     }
+
+    public String getIcon() { return "player.png"; }
 
     public void fire() {
         bullets.add(
