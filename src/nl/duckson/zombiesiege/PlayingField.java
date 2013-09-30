@@ -34,7 +34,7 @@ public class PlayingField extends JPanel implements ActionListener {
         entities = new ArrayList<Entity>();
 
         spawnPlayer();
-        spawnZombies();
+        spawnZombies(10);
 
         timer = new Timer(25, this);
         timer.start();
@@ -45,8 +45,8 @@ public class PlayingField extends JPanel implements ActionListener {
         player.moveTo(Game.GAME_WIDTH / 2 - 32, Game.GAME_HEIGHT / 2 - 32);
     }
 
-    private void spawnZombies() {
-        for(int i = 0; i < 10; i++) {
+    private void spawnZombies(int n) {
+        for(int i = 0; i < n; i++) {
             Zombie z = new Zombie();
             z.moveTo((int) (Math.random() * 180), (int) (Math.random() * 180));
             entities.add(z);
