@@ -43,7 +43,11 @@ public class Bullet extends Entity {
 
     public void move() {
         x -= BULLET_SPEED;
-        if(x > BOARD_WIDTH || x < 0)
+
+        // Turn the bullet invisible once it leaves the board
+        // This will remove it entirely shortly afterwards
+        if(x > Game.GAME_WIDTH || x < 0 ||
+           y > Game.GAME_HEIGHT || y < 0)
             visible = false;
     }
 }

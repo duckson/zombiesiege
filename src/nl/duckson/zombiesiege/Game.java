@@ -9,11 +9,13 @@ import javax.swing.*;
  * Time: 17:58
  */
 public class Game extends JFrame {
+    public static final int GAME_WIDTH = 800,
+                            GAME_HEIGHT = 600;
     public Game() {
         add(new PlayingField());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         setLocationRelativeTo(null);
         setTitle("ZombieSiege");
         setResizable(false);

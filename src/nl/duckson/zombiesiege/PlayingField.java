@@ -25,8 +25,6 @@ public class PlayingField extends JPanel implements ActionListener {
     protected Player player;
     protected ArrayList<Entity> entities;
 
-    protected static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 400;
-
     public PlayingField() {
         addKeyListener(new TAdapter());
         setFocusable(true);
@@ -44,7 +42,7 @@ public class PlayingField extends JPanel implements ActionListener {
 
     private void spawnPlayer()  {
         player = new Player();
-        player.moveTo(BOARD_WIDTH / 2 - 32, BOARD_HEIGHT / 2 - 32);
+        player.moveTo(Game.GAME_WIDTH / 2 - 32, Game.GAME_HEIGHT / 2 - 32);
     }
 
     private void spawnZombies() {

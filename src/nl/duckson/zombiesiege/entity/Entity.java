@@ -24,8 +24,6 @@ public abstract class Entity {
 
     public boolean visible = true;
 
-    // @todo: Find out a better way to tell an Entity the board width/height
-    protected static final int BOARD_WIDTH = 800, BOARD_HEIGHT = 400;
 
     protected static String icon;
     protected static Image image;

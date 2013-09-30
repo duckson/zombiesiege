@@ -45,12 +45,11 @@ public class Zombie extends Entity {
         if(Math.random() > .99) setRandomMovement();
 
         // Detect the board's edges
-
         if(x <= 0) dx = 1;
-        if(x >= BOARD_WIDTH - width) dx = -1;
+        if(x >= Game.GAME_WIDTH- width) dx = -1;
 
         if(y <= 0) dy = 1;
-        if(y >= BOARD_HEIGHT - width) dy = -1;
+        if(y >= Game.GAME_HEIGHT - width) dy = -1;
 
         super.move();
     }
