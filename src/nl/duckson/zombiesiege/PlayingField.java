@@ -39,7 +39,7 @@ public class PlayingField extends JPanel implements ActionListener {
         entities = new ArrayList<Entity>();
 
         spawnPlayer();
-        spawnZombies(10);
+        spawnZombies(20);
 
         timer = new Timer(25, this);
         timer.start();
@@ -103,6 +103,15 @@ public class PlayingField extends JPanel implements ActionListener {
             }
         }
 
+        checkPlayerFire();
+        updateLabels();
+        player.move();
+        checkCollisions();
+        checkRespawn();
+        repaint();
+    }
+
+    private void checkPlayerFire() {
         if(player.isFiring()) {
             // Only fire automatic weapons every other tick
             if(weapon_tick == 1) {
@@ -114,14 +123,14 @@ public class PlayingField extends JPanel implements ActionListener {
                 weapon_tick++;
             }
         }
-
-        updateLabels();
-        player.move();
-        checkCollisions();
-        repaint();
     }
-
     private int weapon_tick = 0;
+
+    private void checkRespawn() {
+        if(entities.size() < 2) {
+            spawnZombies(8);
+        }
+    }
 
     /**
      * Check if any bullet clips an entity, and remove both if so.
