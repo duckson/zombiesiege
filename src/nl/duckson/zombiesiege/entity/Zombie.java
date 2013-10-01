@@ -11,9 +11,7 @@ import java.awt.*;
  * Date: 23/09/2013
  * Time: 17:21
  */
-public class Zombie extends Entity {
-    protected static int width = 64, height = 64;
-
+public class Zombie extends Human {
     public String getIcon() { return "zombie.png"; }
 
     public Zombie() {

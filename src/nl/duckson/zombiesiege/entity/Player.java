@@ -11,35 +11,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * Able to move around, carry and fire weapons.
+ *
  * User: mathijs
  * Date: 23/09/2013
  * Time: 17:21
  */
-public class Player extends Entity {
+public class Player extends Human {
     public ArrayList<Bullet> bullets;
 
     public ArrayList<Weapon> weapons;
     public int current_weapon;
 
-    /**
-     * The direction the player is facing
-     */
-    private int direction = 0;
-
     private static final int speed = 2;
 
-    private static int width = 64, height = 64;
-
-    public ArrayList getBullets() {
-        return bullets;
-    }
-
     public Player() {
+        width = height = 64;
+
         bullets = new ArrayList<Bullet>();
         weapons = new ArrayList<Weapon>();
 
         // Equip some weapons! :D
         weapons.add(new Handgun());
+        weapons.add(new Revolver());
         weapons.add(new Shotgun());
         weapons.add(new Minigun());
 
@@ -66,6 +60,10 @@ public class Player extends Entity {
         System.out.printf("Equipped %s\n", getWeapon().getName());
     }
 
+    public ArrayList getBullets() {
+        return bullets;
+    }
+
     public String getIcon() { return "player.png"; }
 
     public String getName() {
@@ -89,20 +87,6 @@ public class Player extends Entity {
 
     public void setFiring(boolean f) {
         firing = f;
-    }
-
-    public int watch(int x, int y) {
-        // Bereken de hoek om naar te kijken...
-        int delta_x = this.x - x;
-        int delta_y = this.y - y;
-
-        direction = (int) Math.toDegrees(
-            Math.atan2(delta_y, delta_x)
-        );
-
-        // @todo: Find out what this offset is about
-        direction -= (90 + 45);
-        return direction;
     }
 
     // Key press handling
