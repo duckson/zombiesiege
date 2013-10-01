@@ -1,5 +1,8 @@
 package nl.duckson.zombiesiege;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 /**
@@ -20,6 +23,24 @@ public class Game extends JFrame {
         setTitle("ZombieSiege");
         setResizable(false);
         setVisible(true);
+    }
+
+    // Sound playing helper method
+    public static void playSound(final String path) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            this.getClass().getResourceAsStream("/res/" + path));
+                    clip.open(inputStream);
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println("Sound error!");
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 
     public static void main(String[] args) {

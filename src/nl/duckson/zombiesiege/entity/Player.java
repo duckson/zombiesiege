@@ -1,9 +1,14 @@
 package nl.duckson.zombiesiege.entity;
 
+import nl.duckson.zombiesiege.Game;
+import nl.duckson.zombiesiege.bullet.Bullet;
+import nl.duckson.zombiesiege.weapon.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * User: mathijs
@@ -12,8 +17,13 @@ import java.util.ArrayList;
  */
 public class Player extends Entity {
     public ArrayList<Bullet> bullets;
-    private int ammunition = 100;
 
+    public ArrayList<Weapon> weapons;
+    public int current_weapon;
+
+    /**
+     * The direction the player is facing
+     */
     private int direction = 0;
 
     private static final int speed = 2;
@@ -26,24 +36,61 @@ public class Player extends Entity {
 
     public Player() {
         bullets = new ArrayList<Bullet>();
+        weapons = new ArrayList<Weapon>();
+
+        // Equip some weapons! :D
+        weapons.add(new Handgun());
+        weapons.add(new Shotgun());
+        weapons.add(new Minigun());
+
+        current_weapon = 0;
+    }
+
+    public Weapon getWeapon() {
+        return (Weapon) weapons.get(current_weapon);
+    }
+
+    public void equipNextWeapon() {
+        if(current_weapon == weapons.size() - 1)
+            current_weapon = 0;
+        else
+            current_weapon += 1;
+        System.out.printf("Equipped %s\n", getWeapon().getName());
+    }
+
+    public void equipPreviousWeapon() {
+        if(current_weapon == 0)
+            current_weapon = weapons.size() - 1;
+        else
+            current_weapon -= 1;
+        System.out.printf("Equipped %s\n", getWeapon().getName());
     }
 
     public String getIcon() { return "player.png"; }
 
+    public String getName() {
+        return "Duck";
+    }
+
     public void fire() {
-        bullets.add(
-            // Spawn the bullet at the center of the player
-            new Bullet(x + (width / 2), y + (height / 2), direction)
-        );
-        System.out.printf("Spawned bullet with direction %d\n", Math.abs(direction));
+        Weapon w = getWeapon();
+        // Spawn the bullet(s) at the center of the player
+        Collections.addAll(bullets, w.fire(x + (width / 2), y + (height / 2), direction));
     }
 
     /**
-     * Get the
-     * @param x
-     * @param y
-     * @return int The watch direction in radians
+     * Whether the player is holding the trigger (firing)
      */
+    private boolean firing = false;
+
+    public boolean isFiring() {
+        return firing;
+    }
+
+    public void setFiring(boolean f) {
+        firing = f;
+    }
+
     public int watch(int x, int y) {
         // Bereken de hoek om naar te kijken...
         int delta_x = this.x - x;
@@ -58,6 +105,7 @@ public class Player extends Entity {
         return direction;
     }
 
+    // Key press handling
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
@@ -67,6 +115,11 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_D) dx = speed;  // Right
 
         if(key == KeyEvent.VK_SPACE) fire();
+
+        if(key == KeyEvent.VK_Q) equipPreviousWeapon();
+        if(key == KeyEvent.VK_E) equipNextWeapon();
+
+        if(key == KeyEvent.VK_R) getWeapon().reload();
     }
 
     public void keyReleased(KeyEvent e) {

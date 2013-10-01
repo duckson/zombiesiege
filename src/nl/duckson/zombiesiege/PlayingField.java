@@ -1,6 +1,8 @@
 package nl.duckson.zombiesiege;
 
+import nl.duckson.zombiesiege.bullet.Bullet;
 import nl.duckson.zombiesiege.entity.*;
+import nl.duckson.zombiesiege.weapon.Weapon;
 
 import java.awt.*;
 
@@ -8,7 +10,6 @@ import javax.swing.*;
 
 import java.awt.event.*;
 
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +24,8 @@ public class PlayingField extends JPanel implements ActionListener {
     protected Player player;
     protected ArrayList<Entity> entities;
 
+    protected JLabel currentWeaponLabel;
+
     public PlayingField() {
         addKeyListener(new TAdapter());
         addMouseListener(new MCAdapter());
@@ -30,6 +33,8 @@ public class PlayingField extends JPanel implements ActionListener {
         setFocusable(true);
         setBackground(Color.LIGHT_GRAY);
         setDoubleBuffered(true);
+
+        drawLabels();
 
         entities = new ArrayList<Entity>();
 
@@ -78,6 +83,7 @@ public class PlayingField extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         for(int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
+
             if(e.isVisible()) {
                 e.move();
             } else {
@@ -97,10 +103,25 @@ public class PlayingField extends JPanel implements ActionListener {
             }
         }
 
+        if(player.isFiring()) {
+            // Only fire automatic weapons every other tick
+            if(weapon_tick == 1) {
+                player.fire();
+                player.getWeapon().playFireSound();
+
+                weapon_tick = 0;
+            } else {
+                weapon_tick++;
+            }
+        }
+
+        updateLabels();
         player.move();
         checkCollisions();
         repaint();
     }
+
+    private int weapon_tick = 0;
 
     /**
      * Check if any bullet clips an entity, and remove both if so.
@@ -123,6 +144,26 @@ public class PlayingField extends JPanel implements ActionListener {
         }
     }
 
+    public void drawLabels() {
+        // Player name
+        currentWeaponLabel = new JLabel("", JLabel.CENTER);
+        add(currentWeaponLabel);
+        // Weapon name
+//        add(new JLabel(player.getWeapon().getName(), JLabel.LEFT));
+    }
+
+    public void updateLabels() {
+        Weapon w = player.getWeapon();
+        currentWeaponLabel.setText(
+                player.getName() +
+                        " | " +
+                        w.getName() +
+                        " | " +
+                        w.remainingAmmunition() + "/" + w.maximumAmmunition() +
+                        " bullets"
+        );
+    }
+
     // Adapters & listeners
     private class MAdapter extends MouseMotionAdapter {
         public void mouseMoved(MouseEvent e) {
@@ -131,8 +172,24 @@ public class PlayingField extends JPanel implements ActionListener {
     }
 
     private class MCAdapter extends MouseAdapter {
-        public void mouseClicked(MouseEvent e) {
-            player.fire();
+        public void mousePressed(MouseEvent e) {
+            if(player.getWeapon().isAutomatic()) {
+                // Start firing
+                player.setFiring(true);
+                player.getWeapon().playStartFiringSound();
+            } else {
+                // Fire the non-automatic once
+                player.fire();
+                player.getWeapon().playFireSound();
+            }
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            if(player.getWeapon().isAutomatic()) {
+                // Stop firing
+                player.setFiring(false);
+                player.getWeapon().playStopFiringSound();
+            }
         }
     }
 
