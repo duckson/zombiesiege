@@ -192,7 +192,10 @@ public class PlayingField extends JPanel implements ActionListener {
             } else {
                 // Fire the non-automatic once
                 player.fire();
-                player.getWeapon().playFireSound();
+                if(!player.getWeapon().isOutOfAmmunition())
+                    player.getWeapon().playFireSound();
+                else
+                    player.getWeapon().playEmptyFireSound();
             }
         }
 

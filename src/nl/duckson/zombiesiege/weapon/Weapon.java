@@ -54,5 +54,6 @@ abstract public class Weapon implements Weaponable {
     public void playStartFiringSound() {};
     public void playStopFiringSound() {};
     public void playFireSound() {};
+    public void playEmptyFireSound() {};
     public void playReloadSound() {};
 }
