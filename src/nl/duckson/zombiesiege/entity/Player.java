@@ -1,10 +1,9 @@
 package nl.duckson.zombiesiege.entity;
 
-import nl.duckson.zombiesiege.Game;
 import nl.duckson.zombiesiege.bullet.Bullet;
 import nl.duckson.zombiesiege.weapon.*;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class Player extends Human {
         System.out.printf("Equipped %s\n", getWeapon().getName());
     }
 
-    public ArrayList getBullets() {
+    public ArrayList<Bullet> getBullets() {
         return bullets;
     }
 
