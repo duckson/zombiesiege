@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_zombiesiege" default="compile.module.zombiesiege">
+  <dirname property="module.zombiesiege.basedir" file="${ant.file.module_zombiesiege}"/>
+  
+  <property name="module.jdk.home.zombiesiege" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.zombiesiege" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.zombiesiege" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.zombiesiege" value="${compiler.args}"/>
+  
+  <property name="zombiesiege.output.dir" value="${module.zombiesiege.basedir}/out/production/ZombieSiege"/>
+  <property name="zombiesiege.testoutput.dir" value="${module.zombiesiege.basedir}/out/test/ZombieSiege"/>
+  
+  <path id="zombiesiege.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="zombiesiege.module.production.classpath">
+    <path refid="${module.jdk.classpath.zombiesiege}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="zombiesiege.runtime.production.module.classpath">
+    <pathelement location="${zombiesiege.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="zombiesiege.module.classpath">
+    <path refid="${module.jdk.classpath.zombiesiege}"/>
+    <pathelement location="${zombiesiege.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="zombiesiege.runtime.module.classpath">
+    <pathelement location="${zombiesiege.testoutput.dir}"/>
+    <pathelement location="${zombiesiege.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit-4.10.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.zombiesiege">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.zombiesiege">
+    <patternset refid="excluded.from.module.zombiesiege"/>
+  </patternset>
+  
+  <path id="zombiesiege.module.sourcepath">
+    <dirset dir="${module.zombiesiege.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="zombiesiege.module.test.sourcepath">
+    <dirset dir="${module.zombiesiege.basedir}">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.zombiesiege" depends="compile.module.zombiesiege.production,compile.module.zombiesiege.tests" description="Compile module ZombieSiege"/>
+  
+  <target name="compile.module.zombiesiege.production" depends="register.custom.compilers" description="Compile module ZombieSiege; production classes">
+    <mkdir dir="${zombiesiege.output.dir}"/>
+    <javac2 destdir="${zombiesiege.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.zombiesiege}/javac">
+      <compilerarg line="${compiler.args.zombiesiege}"/>
+      <bootclasspath refid="zombiesiege.module.bootclasspath"/>
+      <classpath refid="zombiesiege.module.production.classpath"/>
+      <src refid="zombiesiege.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.zombiesiege"/>
+    </javac2>
+    
+    <copy todir="${zombiesiege.output.dir}">
+      <fileset dir="${module.zombiesiege.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.zombiesiege.tests" depends="register.custom.compilers,compile.module.zombiesiege.production" description="compile module ZombieSiege; test classes" unless="skip.tests">
+    <mkdir dir="${zombiesiege.testoutput.dir}"/>
+    <javac2 destdir="${zombiesiege.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.zombiesiege}/javac">
+      <compilerarg line="${compiler.args.zombiesiege}"/>
+      <bootclasspath refid="zombiesiege.module.bootclasspath"/>
+      <classpath refid="zombiesiege.module.classpath"/>
+      <src refid="zombiesiege.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.zombiesiege"/>
+    </javac2>
+    
+    <copy todir="${zombiesiege.testoutput.dir}">
+      <fileset dir="${module.zombiesiege.basedir}/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.zombiesiege" description="cleanup module">
+    <delete dir="${zombiesiege.output.dir}"/>
+    <delete dir="${zombiesiege.testoutput.dir}"/>
+  </target>
+</project>
