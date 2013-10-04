@@ -24,3 +24,8 @@ Every tick, the following things occur:
 4. Update the textual labels
 5. Paint all entities and labels on the screen
 
+## License
+
+Code available under the WTFPL.
+
+Credit for the sound effects goes to the [Freesound project](http://freesound.org).
