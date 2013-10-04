@@ -2,31 +2,31 @@ package nl.duckson.zombiesiege.entity;
 
 import java.awt.geom.AffineTransform;
 
-abstract public class Directionable extends Entity {
+public interface Directionable {
+
     /**
-     * The direction in degrees the entity is facing
+     * Tell the Entity to look at a certain coordinate
+     * @param x int
+     * @param y int
+     * @return void
      */
-    protected int direction = 0;
+    public void watch(int x, int y);
 
-    public int watch(int x, int y) {
-        // Bereken de hoek om naar te kijken...
-        int delta_x = this.x - x;
-        int delta_y = this.y - y;
+    /**
+     * Get an Affine transform according to the current direction
+     * @return AffineTransform
+     */
+    public AffineTransform getAffineTransform();
 
-        direction = (int) Math.toDegrees(
-                Math.atan2(delta_y, delta_x)
-        );
+    /**
+     * Get the current direction in degrees (0 to 360)
+     * @return int
+     */
+    public int getDirectionDegrees();
 
-        // @todo: Find out what this offset is about
-        direction -= (90 + 45);
-        return direction;
-    }
-
-    public AffineTransform getAffineTransform() {
-        AffineTransform trans = new AffineTransform();
-        trans.translate(x, y);
-        trans.rotate(Math.toRadians(direction), width / 2, height / 2);
-
-        return trans;
-    }
+    /**
+     * Get the current direcition in radians
+     * @return double
+     */
+    public double getDirectionRadians();
 }
