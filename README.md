@@ -1,8 +1,8 @@
 # ZombieSiege
 
-A horrible 2D top-down roguelike made in an attempt to learn Java. Its code and commit history probably break all kinds of best practices.
+A horrible 2D top-down game made in an attempt to learn Java. Its code and commit history probably break all kinds of best practices.
 
-![alt tag](https://raw.github.com/duckson/zombiesiege/master/zombiesiege.png)
+![Screenshot](https://raw.github.com/duckson/zombiesiege/master/zombiesiege.png)
 
 In this game, you spawn on a playing field with zombies. Your objective is to shoot them down with the various weapons at your disposal.
 
