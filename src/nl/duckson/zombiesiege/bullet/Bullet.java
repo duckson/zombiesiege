@@ -3,9 +3,7 @@ package nl.duckson.zombiesiege.bullet;
 import nl.duckson.zombiesiege.Game;
 import nl.duckson.zombiesiege.entity.Entity;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,8 +12,9 @@ import java.util.Arrays;
  * Time: 21:04
  */
 public class Bullet extends Entity {
-    private int BULLET_SPEED = 4;
-    private int travel_distance = 200;
+    private int bullet_speed = 4;
+
+    protected int travel_distance = 200;
 
     protected static int width = 8, height = 8;
 
@@ -43,7 +42,18 @@ public class Bullet extends Entity {
     public String getIcon() { return "bullet.png"; }
 
     public void move() {
-        x -= BULLET_SPEED;
+        int d = Math.abs(direction);
+        d += 180;
+
+        if(d > 45 && d < 135) // Right
+            x += bullet_speed;
+        else if(d > 135 && d < 225) // Down
+            y -= bullet_speed;
+        else if(d > 225 && d < 315) // Left
+            x -= bullet_speed;
+        else // if(d > 315 || d < 45) // Up
+            y += bullet_speed;
+
 
         // Turn the bullet invisible once it leaves the board
         // This will remove it entirely shortly afterwards
@@ -54,5 +64,13 @@ public class Bullet extends Entity {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    public int getSpeed() {
+        return bullet_speed;
+    }
+
+    public void setSpeed(int bullet_speed) {
+        this.bullet_speed = bullet_speed;
     }
 }

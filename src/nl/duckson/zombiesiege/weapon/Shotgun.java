@@ -10,6 +10,11 @@ public class Shotgun extends Weapon implements Weaponable {
     private static int bullets_per_shot = 4;
 
     public Bullet[] fire(int x, int y, int direction) {
+        if(isOutOfAmmunition()) {
+            System.out.println("Your " + getName() + " is out of ammo!");
+            return new Bullet[0];
+        }
+
         Bullet[] bullets = new Bullet[bullets_per_shot];
 
         for(int i = 0; i < bullets.length; i++) {
@@ -20,6 +25,8 @@ public class Shotgun extends Weapon implements Weaponable {
             Bullet b = new HailRound(bx, by, direction);
             bullets[i] = b;
         }
+
+        ammunition--;
 
         return bullets;
     }

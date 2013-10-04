@@ -19,6 +19,7 @@ abstract public class Weapon implements Weaponable {
     public Bullet[] fire(int x, int y, int direction) {
         Bullet b = new Bullet(x, y, direction);
         Bullet[] bs = { b };
+
         return bs;
     }
 
@@ -30,6 +31,10 @@ abstract public class Weapon implements Weaponable {
         return ammunition;
     }
 
+    public boolean isOutOfAmmunition() {
+        return ammunition == 0;
+    }
+
     public boolean isAutomatic() {
         return false;
     }
@@ -37,6 +42,13 @@ abstract public class Weapon implements Weaponable {
     public boolean reload() {
         this.ammunition = maximumAmmunition();
         return true;
+    }
+
+    public Bullet newBullet() {
+        return new Bullet();
+    }
+    public Bullet newBullet(int x, int y, int direction) {
+        return new Bullet(x, y, direction);
     }
 
     public void playStartFiringSound() {};

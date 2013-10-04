@@ -22,12 +22,14 @@ public class Minigun extends Weapon {
     }
 
     public Bullet[] fire(int x, int y, int direction) {
-        if(ammunition == 0) {
-            System.out.printf("Your %s is out of ammo!\n", getName());
-            return null;
+        if(isOutOfAmmunition()) {
+            System.out.println("Your " + getName() + " is out of ammo!");
+            return new Bullet[0];
         }
+
         Bullet b = new Bullet(x, y, direction);
         Bullet[] bs = { b };
+
         ammunition -= bs.length;
 
         return bs;
