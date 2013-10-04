@@ -104,10 +104,10 @@ public class PlayingField extends JPanel implements ActionListener {
         }
 
         checkPlayerFire();
-        updateLabels();
         player.move();
         checkCollisions();
         checkRespawn();
+        updateLabels();
         repaint();
     }
 
@@ -163,10 +163,13 @@ public class PlayingField extends JPanel implements ActionListener {
 
     public void updateLabels() {
         Weapon w = player.getWeapon();
+        // @todo: Change this, it's terrible
         currentWeaponLabel.setText(
                 player.getName() +
                         " | " +
                         w.getName() +
+                        " | " +
+                        player.getHitpoints() + "HP" +
                         " | " +
                         w.remainingAmmunition() + "/" + w.maximumAmmunition() +
                         " bullets"

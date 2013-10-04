@@ -26,6 +26,7 @@ public class Player extends Human {
     private static final int speed = 2;
 
     public Player() {
+        super();
         width = height = 64;
 
         bullets = new ArrayList<Bullet>();
