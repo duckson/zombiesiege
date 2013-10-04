@@ -6,6 +6,10 @@ A horrible 2D top-down roguelike made in an attempt to learn Java. Its code and 
 
 In this game, you spawn on a playing field with zombies. Your objective is to shoot them down with the various weapons at your disposal.
 
+## Controls
+
+Move your character with `W/A/S/D`. Fire your weapon by clicking or hitting the spacebar. Reload it by pressing `R`. Hit `Q` or `E` to cycle between weapons.
+
 ## Building and running
 
 Open the project in IntelliJ or Eclipse and hit "run". It should work on a standard installation.
