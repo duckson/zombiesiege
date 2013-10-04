@@ -1,5 +1,6 @@
 package nl.duckson.zombiesiege.weapon;
 
+import nl.duckson.zombiesiege.Game;
 import nl.duckson.zombiesiege.bullet.Bullet;
 import nl.duckson.zombiesiege.bullet.FastRound;
 
@@ -19,5 +20,10 @@ public class Revolver extends Handgun {
     @Override
     public String getName() {
         return "Revolver";
+    }
+
+    // Sounds
+    public void playFireSound() {
+        Game.playSound("weapon/revolver/revolver_fire.wav");
     }
 }
